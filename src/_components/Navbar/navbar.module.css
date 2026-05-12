@@ -1,0 +1,58 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #eaeaea;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  position: relative; 
+}
+
+
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+.center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+
+.logoImg {
+  height: 40px;
+  object-fit: contain;
+}
+
+
+.fantasia {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  white-space: nowrap;
+  text-align: center;
+}
+
+
