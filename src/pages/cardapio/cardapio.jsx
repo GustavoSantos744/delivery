@@ -26,7 +26,7 @@ export default function Cardapio() {
 
     queryFn: async () => {
       const resRest = await fetch(
-        `http://192.168.3.107:3000/restaurante/${urlacesso}`,
+        `/api/restaurante/${urlacesso}`,
         {
           headers: { auth: "4YGkIOKH29dNA1sKuXWVCItsJo0Cpv7E" },
           cache: "no-store",
@@ -47,7 +47,7 @@ export default function Cardapio() {
       }
 
       const resProd = await fetch(
-        `http://192.168.3.107:3000/produtos`,
+        `/api/produtos`,
         {
           headers: { auth: restaurante.TOKEN },
           cache: "no-store",

@@ -17,7 +17,7 @@ export default function Navbar() {
 
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:3000/restaurante/${urlacesso}`,
+        `/api/restaurante/${urlacesso}`,
         {
           headers: { auth: "4YGkIOKH29dNA1sKuXWVCItsJo0Cpv7E" },
         }
