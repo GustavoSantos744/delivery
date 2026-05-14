@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import CardProduto from "../../_components/CardProduto/card";
 import styles from "./cardapio.module.css";
 import LoadingSpinner from "../../_components/LoadingSnipper/loadingsnipper";
+import CampoBusca from "../../_components/Search/search";
 
 export default function Cardapio() {
   const { urlacesso } = useParams();
@@ -99,6 +100,7 @@ export default function Cardapio() {
   }
 
   return (
+    
     <div className={styles.container}>
       {grupos.map((grupo) => (
         <div key={grupo?.CODIGO} className={styles.grupo}>

@@ -1,0 +1,57 @@
+/* Campo de busca */
+.boxBusca {
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  background: #f7f7f7;
+  z-index: 20;
+}
+
+.inputBusca {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.inputBusca:focus {
+  border-color: #d8d8d8;
+  box-shadow: 0 0 0 2px rgba(6, 102, 211, 0.2);
+}
+
+
+/* Produto */
+.cardProduto {
+  background: #fff;
+  padding: 12px 14px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.cardProduto:hover {
+  transform: scale(1.02);
+}
+
+.cardProduto span {
+  font-weight: 600;
+}
+
+.cardProduto small {
+  color: #777;
+}
+
+
+/* Mensagem */
+.semResultado {
+  text-align: center;
+  color: #999;
+  margin-top: 20px;
+}

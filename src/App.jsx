@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import Cardapio from "./pages/cardapio/cardapio"; 
 import Navbar from "./_components/Navbar/navbar";
-
+import CampoBusca from "./_components/Search/search";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +38,7 @@ export default function App() {
             element={
               <>
                 <Navbar />
+                <CampoBusca />
                 <Cardapio />
               </>
             }
