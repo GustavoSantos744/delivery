@@ -44,69 +44,57 @@ export default function Cardapio() {
     );
   }
 
-  const grupos = Array.isArray(data?.produtos)
-    ? data.produtos
-    : [];
+  const grupos = Array.isArray(data?.produtos) ? data.produtos : [];
 
   return (
     <>
       <Navbar />
 
-      <CampoBusca
-        busca={busca}
-        setBusca={setBusca}
-      />
+      <CampoBusca busca={busca} setBusca={setBusca} />
 
       {/* 🔥 CARROSSEL DE GRUPOS */}
       <CardGrupo grupos={grupos} />
 
       <div className={styles.container}>
-        {grupos
-          .filter((grupo) =>
-            grupo?.PRODUTOS?.some((p) =>
-              p?.DESCRICAO
-                ?.toLowerCase()
-                .includes(busca.toLowerCase())
-            )
-          )
-          .map((grupo) => (
+        {grupos.map((grupo) => {
+          // 🔥 filtra produtos primeiro
+          const produtosFiltrados = (grupo?.PRODUTOS || []).filter((p) =>
+            p?.DESCRICAO?.toLowerCase().includes(busca.toLowerCase()),
+          );
+
+          // se não tem produtos, não renderiza o grupo
+          if (produtosFiltrados.length === 0) return null;
+
+          return (
             <div
               key={grupo?.CODIGO}
               id={`grupo-${grupo?.CODIGO}`}
               className={styles.grupo}
             >
-              <h2 className={styles.tituloGrupo}>
-                {grupo?.DESCRICAO}
-              </h2>
+              <h2 className={styles.tituloGrupo}>{grupo?.DESCRICAO}</h2>
 
               <div className={styles.lista}>
-                {(grupo?.PRODUTOS || [])
-                  .filter((p) =>
-                    p?.DESCRICAO
-                      ?.toLowerCase()
-                      .includes(busca.toLowerCase())
-                  )
-                  .map((p) => {
-                    const base64Limpo =
-                      p?.IMAGEM?.replace(/\s/g, "");
+                {produtosFiltrados.map((p) => {
+                  const base64Limpo = p?.IMAGEM?.replace(/\s/g, "");
 
-                    const urlFinal = base64Limpo
-                      ? `data:image/jpeg;base64,${base64Limpo}`
-                      : null;
+                  const urlFinal = base64Limpo
+                    ? `data:image/jpeg;base64,${base64Limpo}`
+                    : null;
 
-                    return (
-                      <CardProduto
-                        key={p?.CODIGO}
-                        nome={p?.DESCRICAO}
-                        preco={p?.PRECO}
-                        descricao={p?.OBSERVACAO}
-                        imagem={urlFinal}
-                      />
-                    );
-                  })}
+                  return (
+                    <CardProduto
+                      key={p?.CODIGO}
+                      nome={p?.DESCRICAO}
+                      preco={p?.PRECO}
+                      descricao={p?.OBSERVACAO}
+                      imagem={urlFinal}
+                    />
+                  );
+                })}
               </div>
             </div>
-          ))}
+          );
+        })}
       </div>
     </>
   );
