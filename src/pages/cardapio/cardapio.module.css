@@ -17,7 +17,7 @@
 
 /* 🔥 CARROSSEL DE PRODUTOS */
 .lista {
-  display: flex;
+  display: grid;
   gap: 12px;
 
   overflow-x: auto;
