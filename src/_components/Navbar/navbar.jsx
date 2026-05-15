@@ -1,67 +1,48 @@
 import React from "react";
 import styles from "./navbar.module.css";
 import { useParams } from "react-router-dom";
-import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
   const { urlacesso } = useParams();
   const queryClient = useQueryClient();
 
-  const restauranteCache = queryClient.getQueryData([
-    "restaurante",
+  const data = queryClient.getQueryState([
+    "cardapio",
     urlacesso,
-  ]);
+  ])?.data;
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["restaurante", urlacesso],
+  const restaurante = data?.restaurante;
 
-    queryFn: async () => {
-      const res = await fetch(
-        `/api/restaurante/${urlacesso}`,
-        {
-          headers: { auth: "4YGkIOKH29dNA1sKuXWVCItsJo0Cpv7E" },
-        }
-      );
+  if (!restaurante) return null;
 
-      
-      if (res.status === 404) return null;
+  const fantasia = restaurante?.FANTASIA || "";
 
-      if (!res.ok) throw new Error("Erro ao buscar restaurante");
+  const base64 = restaurante?.LOGO?.replace(
+    /\s/g,
+    ""
+  );
 
-      return res.json();
-    },
-
-    enabled: !!urlacesso && !restauranteCache,
-    initialData: restauranteCache,
-    staleTime: 1000 * 60 * 5,
-  });
-
-  
-  if (isLoading) return null;
-  if (error) return null;
-  if (!data) return null;
-
-  const fantasia = data?.FANTASIA || "";
-
-  let logo = null;
-  const base64 = data?.LOGO?.replace(/\s/g, "");
-
-  if (base64) {
-    logo = `data:image/jpeg;base64,${base64}`;
-  }
+  const logo = base64
+    ? `data:image/jpeg;base64,${base64}`
+    : null;
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.left}>
-        {logo ? (
-          <img src={logo} alt="Logo restaurante" className={styles.logoImg} />
-        ) : (
-          <span className={styles.logo}></span>
+        {logo && (
+          <img
+            src={logo}
+            alt="logo"
+            className={styles.logoImg}
+          />
         )}
       </div>
 
       <div className={styles.center}>
-        <span className={styles.fantasia}>{fantasia}</span>
+        <span className={styles.fantasia}>
+          {fantasia}
+        </span>
       </div>
     </nav>
   );

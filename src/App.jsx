@@ -20,7 +20,6 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-
   useEffect(() => {
     AOS.init({
       duration: 800,
@@ -33,16 +32,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/:urlacesso"
-            element={
-              <>
-                <Navbar />
-                <CampoBusca />
-                <Cardapio />
-              </>
-            }
-          />
+          <Route path="/:urlacesso" element={<Cardapio />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
