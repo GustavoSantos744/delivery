@@ -77,12 +77,12 @@ export default function Cardapio() {
               id={`grupo-${grupo?.CODIGO}`}
               className={styles.grupo}
             >
-              {/* NOME DO GRUPO */}
+              {}
               <h2 className={styles.tituloGrupo}>
                 {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
               </h2>
 
-              {/* 🔥 CARROSSEL DE PRODUTOS */}
+              {}
               <div className={styles.lista}>
                 {produtosFiltrados.map((p) => {
                   const base64Limpo =
