@@ -23,7 +23,8 @@ export default function CardGrupo({ grupos = [] }) {
             irParaGrupo(`grupo-${grupo?.CODIGO}`)
           }
         >
-          {grupo?.DESCRICAO}
+          {/* 🔥 NOME LIMPO AQUI TAMBÉM */}
+          {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
         </div>
       ))}
     </div>

@@ -44,25 +44,31 @@ export default function Cardapio() {
     );
   }
 
-  const grupos = Array.isArray(data?.produtos) ? data.produtos : [];
+  const grupos = Array.isArray(data?.produtos)
+    ? data.produtos
+    : [];
 
   return (
     <>
       <Navbar />
 
-      <CampoBusca busca={busca} setBusca={setBusca} />
+      <CampoBusca
+        busca={busca}
+        setBusca={setBusca}
+      />
 
-      {/* 🔥 CARROSSEL DE GRUPOS */}
+      {/* CARROSSEL DE GRUPOS */}
       <CardGrupo grupos={grupos} />
 
       <div className={styles.container}>
         {grupos.map((grupo) => {
-          // 🔥 filtra produtos primeiro
-          const produtosFiltrados = (grupo?.PRODUTOS || []).filter((p) =>
-            p?.DESCRICAO?.toLowerCase().includes(busca.toLowerCase()),
+          const produtosFiltrados = (grupo?.PRODUTOS || []).filter(
+            (p) =>
+              p?.DESCRICAO
+                ?.toLowerCase()
+                .includes(busca.toLowerCase())
           );
 
-          // se não tem produtos, não renderiza o grupo
           if (produtosFiltrados.length === 0) return null;
 
           return (
@@ -71,11 +77,16 @@ export default function Cardapio() {
               id={`grupo-${grupo?.CODIGO}`}
               className={styles.grupo}
             >
-              <h2 className={styles.tituloGrupo}>{grupo?.DESCRICAO}</h2>
+              {/* NOME DO GRUPO */}
+              <h2 className={styles.tituloGrupo}>
+                {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
+              </h2>
 
+              {/* 🔥 CARROSSEL DE PRODUTOS */}
               <div className={styles.lista}>
                 {produtosFiltrados.map((p) => {
-                  const base64Limpo = p?.IMAGEM?.replace(/\s/g, "");
+                  const base64Limpo =
+                    p?.IMAGEM?.replace(/\s/g, "");
 
                   const urlFinal = base64Limpo
                     ? `data:image/jpeg;base64,${base64Limpo}`

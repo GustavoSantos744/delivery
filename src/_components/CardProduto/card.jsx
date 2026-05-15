@@ -18,6 +18,7 @@ export default function CardProduto({
       data-aos="fade-up"
       data-aos-delay={delay}
     >
+      {/* IMAGEM */}
       {temImagem ? (
         <img
           src={imagem}
@@ -27,20 +28,28 @@ export default function CardProduto({
         />
       ) : (
         <div className={styles.semImagem}>
-          SEM-IMAGEM
+          SEM IMAGEM
         </div>
       )}
 
+      {/* INFO */}
       <div className={styles.info}>
-        <span className={styles.nome}>{nome}</span>
+        <span className={styles.nome}>
+          {nome}
+        </span>
 
         {descricao && (
-          <span className={styles.desc}>{descricao}</span>
+          <span className={styles.desc}>
+            {descricao}
+          </span>
         )}
 
         <div className={styles.footer}>
           <span className={styles.preco}>
-            R$ {Number(preco).toFixed(2).replace(".", ",")}
+            R${" "}
+            {Number(preco)
+              .toFixed(2)
+              .replace(".", ",")}
           </span>
         </div>
       </div>
