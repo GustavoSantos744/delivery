@@ -51,10 +51,12 @@ export default function Cardapio() {
   }
 
   if (error) {
+    console.log(error)
     return (
       <div style={{ padding: 20 }}>
         <h2>
           Erro ao carregar cardápio
+          
         </h2>
       </div>
     );
