@@ -1,0 +1,35 @@
+.carrossel {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  background: #fff;
+}
+
+.carrossel::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  background: #f3f3f3;
+  border-radius: 12px;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.card:hover {
+  background: #e9e9e9;
+  border-color: #ccc;
+}
+
+.card:active {
+  transform: scale(0.95);
+}

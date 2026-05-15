@@ -7,6 +7,7 @@ import styles from "./cardapio.module.css";
 import LoadingSpinner from "../../_components/LoadingSnipper/loadingsnipper";
 import CampoBusca from "../../_components/Search/search";
 import Navbar from "../../_components/Navbar/navbar";
+import CardGrupo from "../../_components/CardGrupo/cardgrupo";
 
 import { buscarCardapio } from "../../services/cardapioQuery";
 
@@ -17,10 +18,6 @@ export default function Cardapio() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [urlacesso]);
-
-  function detectarMime(base64) {
-    return "image/jpeg";
-  }
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["cardapio", urlacesso],
@@ -53,16 +50,16 @@ export default function Cardapio() {
 
   return (
     <>
-      {/* NAVBAR */}
       <Navbar />
 
-      {/* SEARCH */}
       <CampoBusca
         busca={busca}
         setBusca={setBusca}
       />
 
-      {/* LISTA */}
+      {/* 🔥 CARROSSEL DE GRUPOS */}
+      <CardGrupo grupos={grupos} />
+
       <div className={styles.container}>
         {grupos
           .filter((grupo) =>
@@ -75,6 +72,7 @@ export default function Cardapio() {
           .map((grupo) => (
             <div
               key={grupo?.CODIGO}
+              id={`grupo-${grupo?.CODIGO}`}
               className={styles.grupo}
             >
               <h2 className={styles.tituloGrupo}>
@@ -92,11 +90,9 @@ export default function Cardapio() {
                     const base64Limpo =
                       p?.IMAGEM?.replace(/\s/g, "");
 
-                    let urlFinal = null;
-
-                    if (base64Limpo) {
-                      urlFinal = `data:image/jpeg;base64,${base64Limpo}`;
-                    }
+                    const urlFinal = base64Limpo
+                      ? `data:image/jpeg;base64,${base64Limpo}`
+                      : null;
 
                     return (
                       <CardProduto
