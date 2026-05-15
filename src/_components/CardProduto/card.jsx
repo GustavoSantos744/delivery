@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import styles from "./card.module.css";
 
 export default function CardProduto({
@@ -9,10 +8,10 @@ export default function CardProduto({
   imagem,
   descricao,
   delay = 0,
+  onClick,
 }) {
   const [erroImagem, setErroImagem] = useState(false);
   const [verMais, setVerMais] = useState(false);
-  const navigate = useNavigate();
 
   const temImagem = imagem && !erroImagem;
 
@@ -26,7 +25,7 @@ export default function CardProduto({
       className={styles.card}
       data-aos="fade-up"
       data-aos-delay={delay}
-      onClick={() => navigate(`/produto/${codigo}`)}
+      onClick={onClick}
       style={{ cursor: "pointer" }}
     >
       {temImagem ? (

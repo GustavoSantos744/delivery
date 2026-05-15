@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import CardProduto from "../../_components/CardProduto/card";
+import DetalheProduto from "../../_components/DetalheProduto/detalhe";
 import styles from "./cardapio.module.css";
+
 import LoadingSpinner from "../../_components/LoadingSnipper/loadingsnipper";
 import CampoBusca from "../../_components/Search/search";
 import Navbar from "../../_components/Navbar/navbar";
@@ -13,16 +15,26 @@ import { buscarCardapio } from "../../services/cardapioQuery";
 
 export default function Cardapio() {
   const { urlacesso } = useParams();
+
   const [busca, setBusca] = useState("");
+  const [produtoSelecionado, setProdutoSelecionado] =
+    useState(null);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [urlacesso]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["cardapio", urlacesso],
-    queryFn: () => buscarCardapio(urlacesso),
+
+    queryFn: () =>
+      buscarCardapio(urlacesso),
+
     enabled: !!urlacesso,
+
     staleTime: 1000 * 60 * 5,
   });
 
@@ -31,7 +43,9 @@ export default function Cardapio() {
   if (data?.notFound) {
     return (
       <div style={{ padding: 20 }}>
-        <h2>Restaurante não encontrado</h2>
+        <h2>
+          Restaurante não encontrado
+        </h2>
       </div>
     );
   }
@@ -39,7 +53,9 @@ export default function Cardapio() {
   if (error) {
     return (
       <div style={{ padding: 20 }}>
-        <h2>Erro ao carregar cardápio</h2>
+        <h2>
+          Erro ao carregar cardápio
+        </h2>
       </div>
     );
   }
@@ -57,19 +73,20 @@ export default function Cardapio() {
         setBusca={setBusca}
       />
 
-      {/* CARROSSEL DE GRUPOS */}
       <CardGrupo grupos={grupos} />
 
       <div className={styles.container}>
         {grupos.map((grupo) => {
-          const produtosFiltrados = (grupo?.PRODUTOS || []).filter(
-            (p) =>
-              p?.DESCRICAO
-                ?.toLowerCase()
-                .includes(busca.toLowerCase())
+          const produtosFiltrados = (
+            grupo?.PRODUTOS || []
+          ).filter((p) =>
+            p?.DESCRICAO?.toLowerCase().includes(
+              busca.toLowerCase()
+            )
           );
 
-          if (produtosFiltrados.length === 0) return null;
+          if (produtosFiltrados.length === 0)
+            return null;
 
           return (
             <div
@@ -77,28 +94,52 @@ export default function Cardapio() {
               id={`grupo-${grupo?.CODIGO}`}
               className={styles.grupo}
             >
-              {}
               <h2 className={styles.tituloGrupo}>
-                {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
+                {grupo?.DESCRICAO?.replace(
+                  /^\d+\s*-\s*/,
+                  ""
+                )}
               </h2>
 
-              {}
               <div className={styles.lista}>
                 {produtosFiltrados.map((p) => {
                   const base64Limpo =
-                    p?.IMAGEM?.replace(/\s/g, "");
+                    p?.IMAGEM?.replace(
+                      /\s/g,
+                      ""
+                    );
 
-                  const urlFinal = base64Limpo
-                    ? `data:image/jpeg;base64,${base64Limpo}`
-                    : null;
+                  const urlFinal =
+                    base64Limpo
+                      ? `data:image/jpeg;base64,${base64Limpo}`
+                      : null;
 
                   return (
                     <CardProduto
                       key={p?.CODIGO}
+                      codigo={p?.CODIGO}
                       nome={p?.DESCRICAO}
                       preco={p?.PRECO}
                       descricao={p?.OBSERVACAO}
                       imagem={urlFinal}
+                      onClick={() =>
+                        setProdutoSelecionado({
+                          codigo:
+                            p?.CODIGO,
+
+                          nome:
+                            p?.DESCRICAO,
+
+                          preco:
+                            p?.PRECO,
+
+                          descricao:
+                            p?.OBSERVACAO,
+
+                          imagem:
+                            urlFinal,
+                        })
+                      }
                     />
                   );
                 })}
@@ -107,6 +148,13 @@ export default function Cardapio() {
           );
         })}
       </div>
+
+      <DetalheProduto
+        produto={produtoSelecionado}
+        fechar={() =>
+          setProdutoSelecionado(null)
+        }
+      />
     </>
   );
 }
