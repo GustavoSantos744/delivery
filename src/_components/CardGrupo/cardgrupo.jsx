@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./page.module.css";
+import styles from "./cardgrupo.module.css";
 
 export default function CardGrupo({ grupos = [] }) {
   function irParaGrupo(id) {
