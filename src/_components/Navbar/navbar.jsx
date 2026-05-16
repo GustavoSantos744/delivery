@@ -1,27 +1,81 @@
 import React from "react";
+
 import styles from "./navbar.module.css";
+
 import { useParams } from "react-router-dom";
+
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
-  const { urlacesso } = useParams();
-  const queryClient = useQueryClient();
 
-  const data = queryClient.getQueryState([
-    "cardapio",
-    urlacesso,
-  ])?.data;
+  const { urlacesso } =
+    useParams();
 
-  const restaurante = data?.restaurante;
+  const queryClient =
+    useQueryClient();
 
-  if (!restaurante) return null;
+  const data =
+    queryClient.getQueryData([
+      "cardapio",
+      urlacesso,
+    ]);
 
-  const fantasia = restaurante?.FANTASIA || "";
+  const corData =
+    queryClient.getQueryData([
+      "cor-restaurante",
+      urlacesso,
+    ]);
 
-  const base64 = restaurante?.LOGO?.replace(
-    /\s/g,
-    ""
-  );
+  const restaurante =
+    data?.restaurante;
+
+  if (!restaurante)
+    return null;
+
+  // CONVERTE TColor DELPHI -> HEX CSS
+  function converterCorDelphi(
+    corDelphi
+  ) {
+
+    if (!corDelphi)
+      return "#222";
+
+    const hex =
+      corDelphi.replace(
+        "$00",
+        ""
+      );
+
+    // BBGGRR
+
+    const bb =
+      hex.substring(0, 2);
+
+    const gg =
+      hex.substring(2, 4);
+
+    const rr =
+      hex.substring(4, 6);
+
+    // RRGGBB
+
+    return `#${rr}${gg}${bb}`;
+  }
+
+  const corPrincipal =
+    converterCorDelphi(
+      corData?.CORPRINCIPAL
+    );
+
+  const fantasia =
+    restaurante?.FANTASIA ||
+    "";
+
+  const base64 =
+    restaurante?.LOGO?.replace(
+      /\s/g,
+      ""
+    );
 
   const logo = base64
     ? `data:image/jpeg;base64,${base64}`
@@ -29,18 +83,34 @@ export default function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.left}>
+      <div
+        className={styles.left}
+      >
         {logo && (
           <img
             src={logo}
             alt="logo"
-            className={styles.logoImg}
+            className={
+              styles.logoImg
+            }
           />
         )}
       </div>
 
-      <div className={styles.center}>
-        <span className={styles.fantasia}>
+      <div
+        className={
+          styles.center
+        }
+      >
+        <span
+          className={
+            styles.fantasia
+          }
+          style={{
+            color:
+              corPrincipal,
+          }}
+        >
           {fantasia}
         </span>
       </div>

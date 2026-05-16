@@ -1,7 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
@@ -21,64 +18,41 @@ import Navbar from "../../_components/Navbar/navbar";
 
 import CardGrupo from "../../_components/CardGrupo/cardgrupo";
 
-import {
-  buscarCardapio,
-} from "../../services/cardapioQuery";
+import { buscarCardapio } from "../../services/cardapioQuery";
 
-import {
-  buscarCorRestaurante,
-} from "../../services/corQuery";
+import { buscarCorRestaurante } from "../../services/corQuery";
 
 export default function Cardapio() {
+  const { urlacesso } = useParams();
 
-  const { urlacesso } =
-    useParams();
+  const [busca, setBusca] = useState("");
 
-  const [busca, setBusca] =
-    useState("");
-
-  const [
-    produtoSelecionado,
-    setProdutoSelecionado,
-  ] = useState(null);
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
 
   useEffect(() => {
-
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-
   }, [urlacesso]);
 
   // CONVERTE TColor DELPHI -> HEX CSS
-  function converterCorDelphi(
-    corDelphi
-  ) {
-
-    if (!corDelphi)
-      return null;
+  function converterCorDelphi(corDelphi) {
+    if (!corDelphi) return null;
 
     // Ex:
     // $00B89706
 
-    const hex =
-      corDelphi.replace(
-        "$00",
-        ""
-      );
+    const hex = corDelphi.replace("$00", "");
 
     // FORMATO:
     // BBGGRR
 
-    const bb =
-      hex.substring(0, 2);
+    const bb = hex.substring(0, 2);
 
-    const gg =
-      hex.substring(2, 4);
+    const gg = hex.substring(2, 4);
 
-    const rr =
-      hex.substring(4, 6);
+    const rr = hex.substring(4, 6);
 
     // RETORNA:
     // RRGGBB
@@ -87,70 +61,42 @@ export default function Cardapio() {
   }
 
   // QUERY CARDÁPIO
-  const {
-    data,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["cardapio", urlacesso],
 
-    queryKey: [
-      "cardapio",
-      urlacesso,
-    ],
-
-    queryFn: () =>
-      buscarCardapio(
-        urlacesso
-      ),
+    queryFn: () => buscarCardapio(urlacesso),
 
     enabled: !!urlacesso,
 
-    staleTime:
-      1000 * 60 * 5,
+    staleTime: 1000 * 60 * 5,
   });
 
   // QUERY COR
-  const {
-    data: corData,
-  } = useQuery({
+  const { data: corData } = useQuery({
+    queryKey: ["cor-restaurante", urlacesso],
 
-    queryKey: [
-      "cor-restaurante",
-      urlacesso,
-    ],
-
-    queryFn: () =>
-      buscarCorRestaurante(
-        urlacesso
-      ),
+    queryFn: () => buscarCorRestaurante(urlacesso),
 
     enabled: !!urlacesso,
 
-    staleTime:
-      1000 * 60 * 10,
+    staleTime: 1000 * 60 * 10,
   });
 
-  if (isLoading)
-    return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   if (data?.notFound) {
-
     return (
       <div
         style={{
           padding: 20,
         }}
       >
-        <h2>
-          Restaurante não
-          encontrado
-        </h2>
+        <h2>Restaurante não encontrado</h2>
       </div>
     );
   }
 
   if (error) {
-
     console.log(error);
 
     return (
@@ -159,175 +105,91 @@ export default function Cardapio() {
           padding: 20,
         }}
       >
-        <h2>
-          Erro ao carregar
-          cardápio
-        </h2>
+        <h2>Erro ao carregar cardápio</h2>
       </div>
     );
   }
 
-  const grupos =
-    Array.isArray(
-      data?.produtos
-    )
-      ? data.produtos
-      : [];
+  const grupos = Array.isArray(data?.produtos) ? data.produtos : [];
 
   // COR DO BANCO
-  const corPrincipal =
-    converterCorDelphi(
-      corData?.CORPRINCIPAL
-    ) || "#cecece";
+  const corPrincipal = converterCorDelphi(corData?.CORPRINCIPAL) || "#cecece";
 
   return (
     <div>
       <Navbar />
 
-      <CampoBusca
-        busca={busca}
-        setBusca={setBusca}
-      />
+      <CampoBusca busca={busca} setBusca={setBusca} />
 
-      <CardGrupo
-        grupos={grupos}
-        corPrincipal={
-          corPrincipal
-        }
-      />
+      <CardGrupo grupos={grupos} corPrincipal={corPrincipal} />
 
-      <div
-        className={
-          styles.container
-        }
-      >
-        {grupos.map(
-          (grupo) => {
+      <div className={styles.container}>
+        {grupos.map((grupo) => {
+          const produtosFiltrados = (grupo?.PRODUTOS || []).filter((p) =>
+            p?.DESCRICAO?.toLowerCase().includes(busca.toLowerCase()),
+          );
 
-            const produtosFiltrados =
-              (
-                grupo?.PRODUTOS ||
-                []
-              ).filter(
-                (p) =>
-                  p?.DESCRICAO?.toLowerCase().includes(
-                    busca.toLowerCase()
-                  )
-              );
+          if (produtosFiltrados.length === 0) return null;
 
-            if (
-              produtosFiltrados.length ===
-              0
-            )
-              return null;
-
-            return (
-              <div
-                key={
-                  grupo?.CODIGO
-                }
-                id={`grupo-${grupo?.CODIGO}`}
-                className={
-                  styles.grupo
-                }
+          return (
+            <div
+              key={grupo?.CODIGO}
+              id={`grupo-${grupo?.CODIGO}`}
+              className={styles.grupo}
+            >
+              <h2
+                className={styles.tituloGrupo}
+                style={{
+                  color: corPrincipal,
+                }}
               >
-                <h2
-                  className={
-                    styles.tituloGrupo
-                  }
-                  style={{
-                    color:
-                      corPrincipal,
-                  }}
-                >
-                  {grupo?.DESCRICAO?.replace(
-                    /^\d+\s*-\s*/,
-                    ""
-                  )}
-                </h2>
+                {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
+              </h2>
 
-                <div
-                  className={
-                    styles.lista
-                  }
-                >
-                  {produtosFiltrados.map(
-                    (p) => {
+              <div className={styles.lista}>
+                {produtosFiltrados.map((p) => {
+                  const base64Limpo = p?.IMAGEM?.replace(/\s/g, "");
 
-                      const base64Limpo =
-                        p?.IMAGEM?.replace(
-                          /\s/g,
-                          ""
-                        );
+                  const urlFinal = base64Limpo
+                    ? `data:image/jpeg;base64,${base64Limpo}`
+                    : null;
 
-                      const urlFinal =
-                        base64Limpo
-                          ? `data:image/jpeg;base64,${base64Limpo}`
-                          : null;
+                  return (
+                    <CardProduto
+                      key={p?.CODIGO}
+                      codigo={p?.CODIGO}
+                      nome={p?.DESCRICAO}
+                      preco={p?.PRECO}
+                      descricao={p?.OBSERVACAO}
+                      imagem={urlFinal}
+                      corPrincipal={corPrincipal}
+                      onClick={() =>
+                        setProdutoSelecionado({
+                          codigo: p?.CODIGO,
 
-                      return (
-                        <CardProduto
-                          key={
-                            p?.CODIGO
-                          }
-                          codigo={
-                            p?.CODIGO
-                          }
-                          nome={
-                            p?.DESCRICAO
-                          }
-                          preco={
-                            p?.PRECO
-                          }
-                          descricao={
-                            p?.OBSERVACAO
-                          }
-                          imagem={
-                            urlFinal
-                          }
-                          corPrincipal={
-                            corPrincipal
-                          }
-                          onClick={() =>
-                            setProdutoSelecionado(
-                              {
-                                codigo:
-                                  p?.CODIGO,
+                          nome: p?.DESCRICAO,
 
-                                nome:
-                                  p?.DESCRICAO,
+                          preco: p?.PRECO,
 
-                                preco:
-                                  p?.PRECO,
+                          descricao: p?.OBSERVACAO,
 
-                                descricao:
-                                  p?.OBSERVACAO,
+                          imagem: urlFinal,
 
-                                imagem:
-                                  urlFinal,
-                              }
-                            )
-                          }
-                        />
-                      );
-                    }
-                  )}
-                </div>
+                          corPrincipal: corPrincipal,
+                        })
+                      }
+                    />
+                  );
+                })}
               </div>
-            );
-          }
-        )}
+            </div>
+          );
+        })}
       </div>
 
       <DetalheProduto
-        produto={
-          produtoSelecionado
-        }
-        fechar={() =>
-          setProdutoSelecionado(
-            null
-          )
-        }
+        produto={produtoSelecionado}
+        fechar={() => setProdutoSelecionado(null)}
       />
     </div>
   );
