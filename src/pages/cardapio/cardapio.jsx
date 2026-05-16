@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 
 import { useParams } from "react-router-dom";
 
@@ -25,10 +28,15 @@ import { buscarCorRestaurante } from "../../services/corQuery";
 export default function Cardapio() {
   const { urlacesso } = useParams();
 
-  const [busca, setBusca] = useState("");
+  const [busca, setBusca] =
+    useState("");
 
-  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+  const [
+    produtoSelecionado,
+    setProdutoSelecionado,
+  ] = useState(null);
 
+  // sobe topo ao trocar restaurante
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -36,126 +44,134 @@ export default function Cardapio() {
     });
   }, [urlacesso]);
 
+  // =====================================
   // CONVERTE TColor DELPHI -> HEX CSS
+  // =====================================
+
   function converterCorDelphi(
-  corDelphi
-) {
+    corDelphi
+  ) {
+    if (!corDelphi)
+      return "#cecece";
 
-  if (!corDelphi)
+    const coresDelphi = {
+      clBlack: "#000000",
+      clWhite: "#FFFFFF",
+      clRed: "#FF0000",
+      clLime: "#00FF00",
+      clBlue: "#0000FF",
+      clYellow: "#FFFF00",
+      clAqua: "#00FFFF",
+      clFuchsia: "#FF00FF",
+      clGray: "#808080",
+      clSilver: "#C0C0C0",
+      clMaroon: "#800000",
+      clGreen: "#008000",
+      clNavy: "#000080",
+      clOlive: "#808000",
+      clPurple: "#800080",
+      clTeal: "#008080",
+    };
+
+    if (
+      coresDelphi[corDelphi]
+    ) {
+      return coresDelphi[
+        corDelphi
+      ];
+    }
+
+    // Ex: $00B89706
+    if (
+      corDelphi.startsWith(
+        "$00"
+      )
+    ) {
+      const hex =
+        corDelphi.replace(
+          "$00",
+          ""
+        );
+
+      // BBGGRR
+      const bb =
+        hex.substring(0, 2);
+
+      const gg =
+        hex.substring(2, 4);
+
+      const rr =
+        hex.substring(4, 6);
+
+      return `#${rr}${gg}${bb}`;
+    }
+
+    if (
+      corDelphi.startsWith("#")
+    ) {
+      return corDelphi;
+    }
+
     return "#cecece";
-
-  // CORES PADRÃO DELPHI
-  const coresDelphi = {
-
-    clBlack: "#000000",
-
-    clWhite: "#FFFFFF",
-
-    clRed: "#FF0000",
-
-    clLime: "#00FF00",
-
-    clBlue: "#0000FF",
-
-    clYellow: "#FFFF00",
-
-    clAqua: "#00FFFF",
-
-    clFuchsia: "#FF00FF",
-
-    clGray: "#808080",
-
-    clSilver: "#C0C0C0",
-
-    clMaroon: "#800000",
-
-    clGreen: "#008000",
-
-    clNavy: "#000080",
-
-    clOlive: "#808000",
-
-    clPurple: "#800080",
-
-    clTeal: "#008080",
-  };
-
-  // SE FOR clGray, clRed etc
-  if (
-    coresDelphi[corDelphi]
-  ) {
-
-    return coresDelphi[
-      corDelphi
-    ];
   }
 
-  // SE FOR TColor HEX:
-  // Ex: $00B89706
-
-  if (
-    corDelphi.startsWith(
-      "$00"
-    )
-  ) {
-
-    const hex =
-      corDelphi.replace(
-        "$00",
-        ""
-      );
-
-    // BBGGRR
-
-    const bb =
-      hex.substring(0, 2);
-
-    const gg =
-      hex.substring(2, 4);
-
-    const rr =
-      hex.substring(4, 6);
-
-    // RRGGBB
-
-    return `#${rr}${gg}${bb}`;
-  }
-
-  // SE JÁ FOR HEX CSS
-  if (
-    corDelphi.startsWith("#")
-  ) {
-
-    return corDelphi;
-  }
-
-  // FALLBACK
-  return "#cecece";
-}
-
+  // =====================================
   // QUERY CARDÁPIO
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["cardapio", urlacesso],
+  // =====================================
 
-    queryFn: () => buscarCardapio(urlacesso),
+  const {
+    data,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [
+      "cardapio",
+      urlacesso,
+    ],
+
+    queryFn: () =>
+      buscarCardapio(
+        urlacesso
+      ),
 
     enabled: !!urlacesso,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime:
+      1000 * 60 * 5,
   });
 
+  // =====================================
   // QUERY COR
-  const { data: corData } = useQuery({
-    queryKey: ["cor-restaurante", urlacesso],
+  // =====================================
 
-    queryFn: () => buscarCorRestaurante(urlacesso),
+  const { data: corData } =
+    useQuery({
+      queryKey: [
+        "cor-restaurante",
+        urlacesso,
+      ],
 
-    enabled: !!urlacesso,
+      queryFn: () =>
+        buscarCorRestaurante(
+          urlacesso
+        ),
 
-    staleTime: 1000 * 60 * 10,
-  });
+      enabled: !!urlacesso,
 
-  if (isLoading) return <LoadingSpinner />;
+      staleTime:
+        1000 * 60 * 10,
+    });
+
+  // =====================================
+  // LOADING
+  // =====================================
+
+  if (isLoading)
+    return <LoadingSpinner />;
+
+  // =====================================
+  // RESTAURANTE NÃO ENCONTRADO
+  // =====================================
 
   if (data?.notFound) {
     return (
@@ -164,10 +180,17 @@ export default function Cardapio() {
           padding: 20,
         }}
       >
-        <h2>Restaurante não encontrado</h2>
+        <h2>
+          Restaurante não
+          encontrado
+        </h2>
       </div>
     );
   }
+
+  // =====================================
+  // ERROR
+  // =====================================
 
   if (error) {
     console.log(error);
@@ -178,91 +201,182 @@ export default function Cardapio() {
           padding: 20,
         }}
       >
-        <h2>Erro ao carregar cardápio</h2>
+        <h2>
+          Erro ao carregar
+          cardápio
+        </h2>
       </div>
     );
   }
 
-  const grupos = Array.isArray(data?.produtos) ? data.produtos : [];
+  // =====================================
+  // DADOS
+  // =====================================
 
-  // COR DO BANCO
-  const corPrincipal = converterCorDelphi(corData?.CORPRINCIPAL) || "#cecece";
+  const grupos =
+    Array.isArray(
+      data?.produtos
+    )
+      ? data.produtos
+      : [];
+
+  const corPrincipal =
+    converterCorDelphi(
+      corData?.CORPRINCIPAL
+    ) || "#cecece";
+
+  // =====================================
+  // RENDER
+  // =====================================
 
   return (
     <div>
       <Navbar />
 
-      <CampoBusca busca={busca} setBusca={setBusca} />
+      <CampoBusca
+        busca={busca}
+        setBusca={setBusca}
+      />
 
-      <CardGrupo grupos={grupos} corPrincipal={corPrincipal} />
+      <CardGrupo
+        grupos={grupos}
+        corPrincipal={
+          corPrincipal
+        }
+      />
 
-      <div className={styles.container}>
+      <div
+        className={
+          styles.container
+        }
+      >
         {grupos.map((grupo) => {
-          const produtosFiltrados = (grupo?.PRODUTOS || []).filter((p) =>
-            p?.DESCRICAO?.toLowerCase().includes(busca.toLowerCase()),
-          );
+          const produtosFiltrados =
+            (
+              grupo?.PRODUTOS ||
+              []
+            ).filter((p) =>
+              p?.DESCRICAO
+                ?.toLowerCase()
+                .includes(
+                  busca.toLowerCase()
+                )
+            );
 
-          if (produtosFiltrados.length === 0) return null;
+          if (
+            produtosFiltrados.length ===
+            0
+          ) {
+            return null;
+          }
 
           return (
-            <div
-              key={grupo?.CODIGO}
+            <section
+              key={
+                grupo?.CODIGO
+              }
               id={`grupo-${grupo?.CODIGO}`}
-              className={styles.grupo}
+              className={
+                styles.grupo
+              }
             >
               <h2
-                className={styles.tituloGrupo}
+                className={
+                  styles.tituloGrupo
+                }
                 style={{
-                  color: corPrincipal,
+                  color:
+                    corPrincipal,
                 }}
               >
-                {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
+                {grupo?.DESCRICAO?.replace(
+                  /^\d+\s*-\s*/,
+                  ""
+                )}
               </h2>
 
-              <div className={styles.lista}>
-                {produtosFiltrados.map((p) => {
-                  const base64Limpo = p?.IMAGEM?.replace(/\s/g, "");
+              <div
+                className={
+                  styles.lista
+                }
+              >
+                {produtosFiltrados.map(
+                  (p) => {
+                    const base64Limpo =
+                      p?.IMAGEM?.replace(
+                        /\s/g,
+                        ""
+                      );
 
-                  const urlFinal = base64Limpo
-                    ? `data:image/jpeg;base64,${base64Limpo}`
-                    : null;
+                    const urlFinal =
+                      base64Limpo
+                        ? `data:image/jpeg;base64,${base64Limpo}`
+                        : null;
 
-                  return (
-                    <CardProduto
-                      key={p?.CODIGO}
-                      codigo={p?.CODIGO}
-                      nome={p?.DESCRICAO}
-                      preco={p?.PRECO}
-                      descricao={p?.OBSERVACAO}
-                      imagem={urlFinal}
-                      corPrincipal={corPrincipal}
-                      onClick={() =>
-                        setProdutoSelecionado({
-                          codigo: p?.CODIGO,
+                    return (
+                      <CardProduto
+                        key={
+                          p?.CODIGO
+                        }
+                        codigo={
+                          p?.CODIGO
+                        }
+                        nome={
+                          p?.DESCRICAO
+                        }
+                        preco={
+                          p?.PRECO
+                        }
+                        descricao={
+                          p?.OBSERVACAO
+                        }
+                        imagem={
+                          urlFinal
+                        }
+                        corPrincipal={
+                          corPrincipal
+                        }
+                        onClick={() =>
+                          setProdutoSelecionado(
+                            {
+                              codigo:
+                                p?.CODIGO,
 
-                          nome: p?.DESCRICAO,
+                              nome: p?.DESCRICAO,
 
-                          preco: p?.PRECO,
+                              preco:
+                                p?.PRECO,
 
-                          descricao: p?.OBSERVACAO,
+                              descricao:
+                                p?.OBSERVACAO,
 
-                          imagem: urlFinal,
+                              imagem:
+                                urlFinal,
 
-                          corPrincipal: corPrincipal,
-                        })
-                      }
-                    />
-                  );
-                })}
+                              corPrincipal:
+                                corPrincipal,
+                            }
+                          )
+                        }
+                      />
+                    );
+                  }
+                )}
               </div>
-            </div>
+            </section>
           );
         })}
       </div>
 
       <DetalheProduto
-        produto={produtoSelecionado}
-        fechar={() => setProdutoSelecionado(null)}
+        produto={
+          produtoSelecionado
+        }
+        fechar={() =>
+          setProdutoSelecionado(
+            null
+          )
+        }
       />
     </div>
   );

@@ -15,25 +15,75 @@
   color: #222;
 }
 
-/* 🔥 CARROSSEL DE PRODUTOS */
+/* =========================
+   MOBILE
+   1 item por linha
+   ========================= */
+
 .lista {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 12px;
 
-  overflow-x: auto;
-  padding: 10px 0;
-
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* esconder scrollbar */
-.lista::-webkit-scrollbar {
-  display: none;
-}
-
-/* cards lado a lado */
 .lista > * {
-  flex: 0 0 70%;
-  scroll-snap-align: start;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   TABLET
+   2 colunas
+   ========================= */
+
+@media (min-width: 768px) {
+  .lista {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+/* =========================
+   NOTEBOOK
+   3 colunas
+   ========================= */
+
+@media (min-width: 1024px) {
+  .lista {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* =========================
+   TELAS GRANDES
+   estilo moderno tipo Globo
+   ========================= */
+
+@media (min-width: 1440px) {
+  .lista {
+    display: flex;
+
+    gap: 20px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    padding-bottom: 10px;
+  }
+
+  .lista::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lista > * {
+    flex: 0 0 320px;
+    scroll-snap-align: start;
+  }
 }
