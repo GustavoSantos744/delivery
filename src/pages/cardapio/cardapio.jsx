@@ -37,28 +37,101 @@ export default function Cardapio() {
   }, [urlacesso]);
 
   // CONVERTE TColor DELPHI -> HEX CSS
-  function converterCorDelphi(corDelphi) {
-    if (!corDelphi) return null;
+  function converterCorDelphi(
+  corDelphi
+) {
 
-    // Ex:
-    // $00B89706
+  if (!corDelphi)
+    return "#cecece";
 
-    const hex = corDelphi.replace("$00", "");
+  // CORES PADRÃO DELPHI
+  const coresDelphi = {
 
-    // FORMATO:
+    clBlack: "#000000",
+
+    clWhite: "#FFFFFF",
+
+    clRed: "#FF0000",
+
+    clLime: "#00FF00",
+
+    clBlue: "#0000FF",
+
+    clYellow: "#FFFF00",
+
+    clAqua: "#00FFFF",
+
+    clFuchsia: "#FF00FF",
+
+    clGray: "#808080",
+
+    clSilver: "#C0C0C0",
+
+    clMaroon: "#800000",
+
+    clGreen: "#008000",
+
+    clNavy: "#000080",
+
+    clOlive: "#808000",
+
+    clPurple: "#800080",
+
+    clTeal: "#008080",
+  };
+
+  // SE FOR clGray, clRed etc
+  if (
+    coresDelphi[corDelphi]
+  ) {
+
+    return coresDelphi[
+      corDelphi
+    ];
+  }
+
+  // SE FOR TColor HEX:
+  // Ex: $00B89706
+
+  if (
+    corDelphi.startsWith(
+      "$00"
+    )
+  ) {
+
+    const hex =
+      corDelphi.replace(
+        "$00",
+        ""
+      );
+
     // BBGGRR
 
-    const bb = hex.substring(0, 2);
+    const bb =
+      hex.substring(0, 2);
 
-    const gg = hex.substring(2, 4);
+    const gg =
+      hex.substring(2, 4);
 
-    const rr = hex.substring(4, 6);
+    const rr =
+      hex.substring(4, 6);
 
-    // RETORNA:
     // RRGGBB
 
     return `#${rr}${gg}${bb}`;
   }
+
+  // SE JÁ FOR HEX CSS
+  if (
+    corDelphi.startsWith("#")
+  ) {
+
+    return corDelphi;
+  }
+
+  // FALLBACK
+  return "#cecece";
+}
 
   // QUERY CARDÁPIO
   const { data, isLoading, error } = useQuery({

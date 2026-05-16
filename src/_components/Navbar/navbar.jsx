@@ -34,11 +34,66 @@ export default function Navbar() {
 
   // CONVERTE TColor DELPHI -> HEX CSS
   function converterCorDelphi(
-    corDelphi
+  corDelphi
+) {
+
+  if (!corDelphi)
+    return "#cecece";
+
+  // CORES PADRÃO DELPHI
+  const coresDelphi = {
+
+    clBlack: "#000000",
+
+    clWhite: "#FFFFFF",
+
+    clRed: "#FF0000",
+
+    clLime: "#00FF00",
+
+    clBlue: "#0000FF",
+
+    clYellow: "#FFFF00",
+
+    clAqua: "#00FFFF",
+
+    clFuchsia: "#FF00FF",
+
+    clGray: "#808080",
+
+    clSilver: "#C0C0C0",
+
+    clMaroon: "#800000",
+
+    clGreen: "#008000",
+
+    clNavy: "#000080",
+
+    clOlive: "#808000",
+
+    clPurple: "#800080",
+
+    clTeal: "#008080",
+  };
+
+  // SE FOR clGray, clRed etc
+  if (
+    coresDelphi[corDelphi]
   ) {
 
-    if (!corDelphi)
-      return "#222";
+    return coresDelphi[
+      corDelphi
+    ];
+  }
+
+  // SE FOR TColor HEX:
+  // Ex: $00B89706
+
+  if (
+    corDelphi.startsWith(
+      "$00"
+    )
+  ) {
 
     const hex =
       corDelphi.replace(
@@ -61,6 +116,18 @@ export default function Navbar() {
 
     return `#${rr}${gg}${bb}`;
   }
+
+  // SE JÁ FOR HEX CSS
+  if (
+    corDelphi.startsWith("#")
+  ) {
+
+    return corDelphi;
+  }
+
+  // FALLBACK
+  return "#cecece";
+}
 
   const corPrincipal =
     converterCorDelphi(
