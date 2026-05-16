@@ -1,124 +1,132 @@
 .carrossel {
   display: flex;
-  gap: 10px;
+  gap: 6px;
 
   overflow-x: auto;
   overflow-y: hidden;
 
-  padding: 10px 16px;
+  padding: 6px 10px;
 
   background: #fff;
 
-  scroll-behavior: smooth;
+  scrollbar-width: none;
 
   -webkit-overflow-scrolling: touch;
-
-  scrollbar-width: none;
 }
 
 .carrossel::-webkit-scrollbar {
   display: none;
 }
+
+/* =========================
+   CARD ULTRA COMPACTO
+   ========================= */
+
 .card {
+  flex: 0 0 240px;
+
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
+  align-items: center;
+
+  gap: 8px;
 
   background: #fff;
-  border-radius: 16px;
-  padding: 14px;
+
+  border-radius: 12px;
+
+  padding: 8px;
 
   border: 1px solid #eee;
 
-  transition: 0.2s ease;
-
   cursor: pointer;
+
+  transition: 0.2s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
-/* IMAGEM */
+/* =========================
+   IMAGEM PEQUENA
+   ========================= */
+
 .imagem,
 .semImagem {
-  width: 92px;
-  height: 92px;
-  min-width: 92px;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
 
-  border-radius: 14px;
+  border-radius: 10px;
 
   object-fit: cover;
-  background: #f0f0f0;
+
+  background: #f2f2f2;
 }
 
-/* INFO */
+/* =========================
+   INFO COMPACTA
+   ========================= */
+
 .info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+
+  gap: 2px;
 
   min-width: 0;
 }
 
-/* NOME */
+/* =========================
+   TEXTO MENOR
+   ========================= */
+
 .nome {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   color: #222;
 
   line-height: 1.2;
 }
 
-/* DESCRIÇÃO (🔥 AQUI O SEGREDO) */
 .desc {
-  font-size: 13px;
+  font-size: 11px;
   color: #777;
-  line-height: 1.4;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 
   overflow: hidden;
 }
 
-/* FOOTER */
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 4px;
-}
+/* =========================
+   PREÇO PEQUENO
+   ========================= */
 
-/* PREÇO */
 .preco {
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 800;
   color: #16a34a;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE EXTRA
+   ========================= */
+
 @media (max-width: 600px) {
   .card {
-    padding: 12px;
-    gap: 10px;
+    flex: 0 0 220px;
+    padding: 6px;
+    gap: 6px;
   }
 
   .imagem,
   .semImagem {
-    width: 76px;
-    height: 76px;
-    min-width: 76px;
-  }
-
-  .nome {
-    font-size: 14px;
-  }
-
-  .preco {
-    font-size: 16px;
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
   }
 }

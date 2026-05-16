@@ -1,90 +1,114 @@
+:root {
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #444;
+  --color-accent: #16a34a;
+
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+
+  --scroll-margin-top: 80px;
+}
+
+/* =========================
+   CONTAINER
+   ========================= */
+
 .container {
   width: 100%;
-  padding: 0 16px;
+  padding-inline: var(--spacing-md);
   box-sizing: border-box;
 }
 
+/* =========================
+   GRUPO
+   ========================= */
+
 .grupo {
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-lg);
+
+  scroll-margin-top: var(--scroll-margin-top);
+
+  transition: transform 0.2s ease;
 }
+
+.grupo-focus {
+  transform: scale(1.01);
+}
+
+/* =========================
+   TÍTULO
+   ========================= */
 
 .tituloGrupo {
   font-size: 18px;
   font-weight: 600;
+
   margin: 10px 0;
-  color: #222;
+
+  color: var(--color-text-primary);
+
+  transition: all 0.3s ease;
+}
+
+.titulo-ativo {
+  color: var(--color-accent);
+  transform: translateX(4px);
 }
 
 /* =========================
-   MOBILE
-   1 item por linha
+   LISTA (MOBILE FIRST)
    ========================= */
 
 .lista {
   display: grid;
+
   grid-template-columns: 1fr;
+
   gap: 12px;
 
-  width: 100%;
-  box-sizing: border-box;
+  align-items: stretch;
 }
+
+/* =========================
+   TABLET
+   ========================= */
+
+@media (min-width: 768px) {
+  .lista {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+/* =========================
+   NOTEBOOK
+   ========================= */
+
+@media (min-width: 1024px) {
+  .lista {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+/* =========================
+   DESKTOP GRANDE
+   ========================= */
+
+@media (min-width: 1440px) {
+  .lista {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+}
+
+/* =========================
+   GARANTIA DE CARD
+   ========================= */
 
 .lista > * {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
 }
-
-/* =========================
-   TABLET
-   2 colunas
-   ========================= */
-
-@media (min-width: 768px) {
-  .lista {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-  }
-}
-
-/* =========================
-   NOTEBOOK
-   3 colunas
-   ========================= */
-
-@media (min-width: 1024px) {
-  .lista {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* =========================
-   TELAS GRANDES
-   estilo moderno tipo Globo
-   ========================= */
-
-@media (min-width: 1440px) {
-  .lista {
-    display: flex;
-
-    gap: 20px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-
-    padding-bottom: 10px;
-  }
-
-  .lista::-webkit-scrollbar {
-    display: none;
-  }
-
-  .lista > * {
-    flex: 0 0 320px;
-    scroll-snap-align: start;
-  }
-}
-

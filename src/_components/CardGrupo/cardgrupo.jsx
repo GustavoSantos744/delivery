@@ -1,5 +1,4 @@
 import React from "react";
-
 import styles from "./cardgrupo.module.css";
 
 export default function CardGrupo({
@@ -11,8 +10,7 @@ export default function CardGrupo({
 
     if (!el) return;
 
-    // altura do topo/header
-    const offset = 90;
+    const offset = 80;
 
     const top =
       el.getBoundingClientRect().top +
@@ -23,6 +21,27 @@ export default function CardGrupo({
       top,
       behavior: "smooth",
     });
+
+    // =========================
+    // highlight visual no grupo
+    // =========================
+
+    el.classList.add("grupo-focus");
+
+    const titulo =
+      el.querySelector("h2");
+
+    if (titulo) {
+      titulo.classList.add("titulo-ativo");
+
+      setTimeout(() => {
+        titulo.classList.remove("titulo-ativo");
+      }, 500);
+    }
+
+    setTimeout(() => {
+      el.classList.remove("grupo-focus");
+    }, 300);
   }
 
   return (
@@ -34,10 +53,8 @@ export default function CardGrupo({
           style={{
             background:
               corPrincipal || "#22c55e",
-
             borderColor:
               corPrincipal || "#22c55e",
-
             color: "#fff",
           }}
           onClick={() =>
