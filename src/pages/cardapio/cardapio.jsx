@@ -22,9 +22,6 @@ export default function Cardapio() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [urlacesso]);
 
-  // =====================================
-  // CONVERSOR DE COR (Delphi -> HEX)
-  // =====================================
   function converterCorDelphi(corDelphi) {
     if (!corDelphi) return "#cecece";
 
