@@ -10,9 +10,7 @@
   box-sizing: border-box;
 }
 
-/* =========================
-   LISTA (GRID MODERNO)
-   ========================= */
+
 
 .lista {
   display: grid;

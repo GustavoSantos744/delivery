@@ -1,114 +1,29 @@
-:root {
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #444;
-  --color-accent: #16a34a;
-
-  --spacing-sm: 12px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-
-  --scroll-margin-top: 80px;
+html,
+body {
+  background: #f9fafb; /* bg-zinc-50 */
+  color: #1a1a1a;
 }
 
 /* =========================
-   CONTAINER
-   ========================= */
-
-.container {
-  width: 100%;
-  padding-inline: var(--spacing-md);
-  box-sizing: border-box;
-}
-
-/* =========================
-   GRUPO
+   GRUPO (scroll + UX)
    ========================= */
 
 .grupo {
-  margin-bottom: var(--spacing-lg);
+  scroll-margin-top: 80px;
+}
 
-  scroll-margin-top: var(--scroll-margin-top);
-
+/* efeito leve ao focar no grupo */
+.grupo-focus {
+  transform: scale(1.01);
   transition: transform 0.2s ease;
 }
 
-.grupo-focus {
-  transform: scale(1.01);
-}
-
 /* =========================
-   TÍTULO
+   TÍTULO ATIVO
    ========================= */
-
-.tituloGrupo {
-  font-size: 18px;
-  font-weight: 600;
-
-  margin: 10px 0;
-
-  color: var(--color-text-primary);
-
-  transition: all 0.3s ease;
-}
 
 .titulo-ativo {
-  color: var(--color-accent);
+  color: #16a34a;
   transform: translateX(4px);
-}
-
-/* =========================
-   LISTA (MOBILE FIRST)
-   ========================= */
-
-.lista {
-  display: grid;
-
-  grid-template-columns: 1fr;
-
-  gap: 12px;
-
-  align-items: stretch;
-}
-
-/* =========================
-   TABLET
-   ========================= */
-
-@media (min-width: 768px) {
-  .lista {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-}
-
-/* =========================
-   NOTEBOOK
-   ========================= */
-
-@media (min-width: 1024px) {
-  .lista {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-}
-
-/* =========================
-   DESKTOP GRANDE
-   ========================= */
-
-@media (min-width: 1440px) {
-  .lista {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-  }
-}
-
-/* =========================
-   GARANTIA DE CARD
-   ========================= */
-
-.lista > * {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
