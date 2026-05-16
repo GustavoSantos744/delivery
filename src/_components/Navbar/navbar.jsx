@@ -86,8 +86,7 @@ export default function Navbar() {
     ];
   }
 
-  // SE FOR TColor HEX:
-  // Ex: $00B89706
+  
 
   if (
     corDelphi.startsWith(
