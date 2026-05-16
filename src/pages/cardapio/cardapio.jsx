@@ -22,6 +22,9 @@ export default function Cardapio() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [urlacesso]);
 
+  // =====================================
+  // CONVERSOR DE COR (Delphi -> HEX)
+  // =====================================
   function converterCorDelphi(corDelphi) {
     if (!corDelphi) return "#cecece";
 
@@ -59,6 +62,9 @@ export default function Cardapio() {
     return "#cecece";
   }
 
+  // =====================================
+  // QUERY CARDÁPIO
+  // =====================================
   const { data, isLoading, error } = useQuery({
     queryKey: ["cardapio", urlacesso],
     queryFn: () => buscarCardapio(urlacesso),
@@ -66,6 +72,9 @@ export default function Cardapio() {
     staleTime: 1000 * 60 * 5,
   });
 
+  // =====================================
+  // QUERY COR
+  // =====================================
   const { data: corData } = useQuery({
     queryKey: ["cor-restaurante", urlacesso],
     queryFn: () => buscarCorRestaurante(urlacesso),
@@ -73,8 +82,14 @@ export default function Cardapio() {
     staleTime: 1000 * 60 * 10,
   });
 
+  // =====================================
+  // LOADING
+  // =====================================
   if (isLoading) return <LoadingSpinner />;
 
+  // =====================================
+  // ERROS
+  // =====================================
   if (data?.notFound) {
     return (
       <div className="p-5">
@@ -98,14 +113,21 @@ export default function Cardapio() {
   const grupos = Array.isArray(data?.produtos) ? data.produtos : [];
 
   const corPrincipal =
-    converterCorDelphi(corData?.CORPRINCIPAL) || "#cecece";
+    converterCorDelphi(corData?.CORPRINCIPAL) || "#16a34a";
 
+  // =====================================
+  // RENDER
+  // =====================================
   return (
     <div className="bg-zinc-50 min-h-screen">
       <Navbar />
 
-      <CampoBusca busca={busca} setBusca={setBusca} />
+      {/* BUSCA */}
+      <div className="px-4 py-3 max-w-[1400px] mx-auto">
+        <CampoBusca busca={busca} setBusca={setBusca} />
+      </div>
 
+      {/* MENU GRUPOS */}
       <CardGrupo grupos={grupos} corPrincipal={corPrincipal} />
 
       {/* CONTAINER PRINCIPAL */}
@@ -121,7 +143,7 @@ export default function Cardapio() {
             <section
               key={grupo?.CODIGO}
               id={`grupo-${grupo?.CODIGO}`}
-              className="mb-8 scroll-mt-20 transition-all duration-200"
+              className="mb-8 scroll-mt-24 transition-all duration-300"
             >
               {/* TÍTULO */}
               <h2
@@ -131,7 +153,7 @@ export default function Cardapio() {
                 {grupo?.DESCRICAO?.replace(/^\d+\s*-\s*/, "")}
               </h2>
 
-              {/* GRID DE PRODUTOS */}
+              {/* GRID PRODUTOS */}
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {produtosFiltrados.map((p) => {
                   const base64Limpo = p?.IMAGEM?.replace(/\s/g, "");
@@ -148,7 +170,7 @@ export default function Cardapio() {
                       descricao={p?.OBSERVACAO}
                       imagem={urlFinal}
                       corPrincipal={corPrincipal}
-                      onClick={() =>
+                      onClick={() => {
                         setProdutoSelecionado({
                           codigo: p?.CODIGO,
                           nome: p?.DESCRICAO,
@@ -156,8 +178,8 @@ export default function Cardapio() {
                           descricao: p?.OBSERVACAO,
                           imagem: urlFinal,
                           corPrincipal,
-                        })
-                      }
+                        });
+                      }}
                     />
                   );
                 })}
@@ -167,6 +189,7 @@ export default function Cardapio() {
         })}
       </div>
 
+      {/* MODAL DETALHE */}
       <DetalheProduto
         produto={produtoSelecionado}
         fechar={() => setProdutoSelecionado(null)}
