@@ -19,34 +19,106 @@
 .carrossel::-webkit-scrollbar {
   display: none;
 }
-
 .card {
-  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
 
-  padding: 10px 14px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
 
-  border-radius: 12px;
+  border: 1px solid #eee;
 
-  font-size: 14px;
-  font-weight: 600;
-
-  white-space: nowrap;
+  transition: 0.2s ease;
 
   cursor: pointer;
-
-  user-select: none;
-
-  transition:
-    transform 0.15s ease,
-    opacity 0.2s ease;
-
-  border: 1px solid transparent;
 }
 
 .card:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-.card:active {
-  transform: scale(0.96);
+/* IMAGEM */
+.imagem,
+.semImagem {
+  width: 92px;
+  height: 92px;
+  min-width: 92px;
+
+  border-radius: 14px;
+
+  object-fit: cover;
+  background: #f0f0f0;
+}
+
+/* INFO */
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  min-width: 0;
+}
+
+/* NOME */
+.nome {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+
+  line-height: 1.2;
+}
+
+/* DESCRIÇÃO (🔥 AQUI O SEGREDO) */
+.desc {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.4;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+/* PREÇO */
+.preco {
+  font-size: 18px;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .card {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .imagem,
+  .semImagem {
+    width: 76px;
+    height: 76px;
+    min-width: 76px;
+  }
+
+  .nome {
+    font-size: 14px;
+  }
+
+  .preco {
+    font-size: 16px;
+  }
 }
