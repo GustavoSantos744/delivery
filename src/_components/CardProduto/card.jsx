@@ -92,8 +92,7 @@ export default function Cardapio() {
 
   const grupos = Array.isArray(data?.produtos) ? data.produtos : [];
 
-  const corPrincipal =
-    converterCorDelphi(corData?.CORPRINCIPAL) || "#16a34a";
+  const corPrincipal = converterCorDelphi(corData?.CORPRINCIPAL) || "#16a34a";
 
   return (
     <div className="bg-zinc-50 min-h-screen">
@@ -111,7 +110,7 @@ export default function Cardapio() {
       <div className="max-w-[1400px] mx-auto px-4 py-4">
         {grupos.map((grupo) => {
           const produtosFiltrados = (grupo?.PRODUTOS || []).filter((p) =>
-            p?.DESCRICAO?.toLowerCase().includes(busca.toLowerCase())
+            p?.DESCRICAO?.toLowerCase().includes(busca.toLowerCase()),
           );
 
           if (produtosFiltrados.length === 0) return null;
@@ -134,8 +133,8 @@ export default function Cardapio() {
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {produtosFiltrados.map((p) => {
                   const base64Limpo = p?.IMAGEM?.replace(/\s/g, "");
-                  const urlFinal = base64Limpo
-                    ? `data:image/jpeg;base64,${base64Limpo}`
+                  const urlFinal = p?.CODIGO
+                    ? `http://localhost:3000/produtos/imagem/${p.CODIGO}`
                     : null;
 
                   return (
@@ -147,9 +146,7 @@ export default function Cardapio() {
                       descricao={p?.OBSERVACAO}
                       imagem={urlFinal}
                       corPrincipal={corPrincipal}
-                      onClick={(produto) =>
-                        setProdutoSelecionado(produto)
-                      }
+                      onClick={(produto) => setProdutoSelecionado(produto)}
                     />
                   );
                 })}
